@@ -1,6 +1,4 @@
-import uvicorn
-
-class App:
+class EasyAPI:
     async def __call__(self, scope, receive, send):
         assert scope['type'] == 'http'
 
@@ -20,4 +18,3 @@ class App:
             'body': body,
         })
 
-app = App()
