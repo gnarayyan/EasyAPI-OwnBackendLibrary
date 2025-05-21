@@ -22,6 +22,7 @@ async def get_users(req: Request, res: Response):
 
 @app.post('/user')
 async def get_users(req: Request, res: Response):
+    print('Body: ', req.body)
     await res.status(201).json({"success": True, "message": 'Rivaan Added'})
 
 
