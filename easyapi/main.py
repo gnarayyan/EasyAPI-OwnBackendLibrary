@@ -36,14 +36,41 @@ class EasyAPI:
 
     def get(self, path=None):
         def wrapper(handler):
-            path_name = path or ''
-            if path_name not in self.routes:
-                self.routes[path_name] = {}
-
-            if 'GET' not in self.routes[path_name]:
-                self.routes[path_name]['GET'] = handler
-                print(f'GET  {path_name} Registered')
-            else:
-                raise RouteError(f'GET {path_name} already registered')
+            return self._http_wrapper(handler=handler, method_name='GET', path=path)
 
         return wrapper
+
+    def post(self, path=None):
+        def wrapper(handler):
+            return self._http_wrapper(handler=handler, method_name='POST', path=path)
+
+        return wrapper
+
+    def patch(self, path=None):
+        def wrapper(handler):
+            return self._http_wrapper(handler=handler, method_name='PATCH', path=path)
+
+        return wrapper
+
+    def put(self, path=None):
+        def wrapper(handler):
+            return self._http_wrapper(handler=handler, method_name='PUT', path=path)
+
+        return wrapper
+
+    def delete(self, path=None):
+        def wrapper(handler):
+            return self._http_wrapper(handler=handler, method_name='DELETE', path=path)
+
+        return wrapper
+
+    def _http_wrapper(self, handler, method_name, path=None):
+        path_name = path or ''
+        if path_name not in self.routes:
+            self.routes[path_name] = {}
+
+        if method_name not in self.routes[path_name]:
+            self.routes[path_name][method_name] = handler
+            print(f'GET  {path_name} Registered')
+        else:
+            raise RouteError(f'{method_name} {path_name} already registered')
