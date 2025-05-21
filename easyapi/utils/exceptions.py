@@ -25,5 +25,5 @@ class AppWarning(Warning):
         super().__init__(self.message)
 
 
-class RouteAlreadyExistsError(AppError):
+class RouteError(AppError):
     pass
