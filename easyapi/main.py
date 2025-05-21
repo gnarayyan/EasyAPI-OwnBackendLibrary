@@ -8,7 +8,7 @@ from easyapi.utils.exceptions import RouteError
 
 class EasyAPI:
     def __init__(self):
-        self.routes = dict()
+        self._routes = dict()
 
     async def __call__(self, scope, receive, send):
         """Handle the request and response."""
@@ -22,9 +22,9 @@ class EasyAPI:
         # query_params = parse_qs(query_string.decode())
         # print(f'Query Params: {query_params}')
 
-        if self.routes.get(path):
-            if self.routes[path].get(method):
-                handler = self.routes[path][method]
+        if self._routes.get(path):
+            if self._routes[path].get(method):
+                handler = self._routes[path][method]
                 await handler(request, response)
             else:
                 await response.status(404).json(
@@ -66,11 +66,11 @@ class EasyAPI:
 
     def _http_wrapper(self, handler, method_name, path=None):
         path_name = path or ''
-        if path_name not in self.routes:
-            self.routes[path_name] = {}
+        if path_name not in self._routes:
+            self._routes[path_name] = {}
 
-        if method_name not in self.routes[path_name]:
-            self.routes[path_name][method_name] = handler
+        if method_name not in self._routes[path_name]:
+            self._routes[path_name][method_name] = handler
             print(f'GET  {path_name} Registered')
         else:
             raise RouteError(f'{method_name} {path_name} already registered')
