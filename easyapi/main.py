@@ -15,6 +15,9 @@ class EasyAPI:
         request = Request(scope, receive)
         response = Response(send=send)
 
+        # Initialize the request (this is where the body is parsed)
+        await request.initialize()
+
         assert scope['type'] == 'http'
         path = scope["path"]  # Like /users
         method = scope["method"]  # Like get
